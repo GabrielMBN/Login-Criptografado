@@ -1,5 +1,10 @@
+# Imports
+
 import os
 from cryptography.fernet import Fernet
+
+# Padrões
+
 option = None
 name = None
 granted = False
@@ -8,6 +13,7 @@ defaultPass = 'admin'
 encDefaultPass = None
 fernet = None
 
+# Verificando se há necessidade/criando txt com user details e key
 
 if not os.path.isfile('user_details.csv'):
     key = Fernet.generate_key()
@@ -24,11 +30,13 @@ else:
     fernet = Fernet(key.encode())
     encDefaultPass = defaultPass
 
-
+# Login/registro garantido
+    
 def grant():
     global granted
     granted = True
 
+# Efetuando login
 
 def login(name, encPassword):
     global encDefaultPass
@@ -56,7 +64,8 @@ def login(name, encPassword):
     else:
         print('Erro no login.')
 
-
+# Efetuando registro
+        
 def register(name, password):
     encPassword = fernet.encrypt(bytes(password, "utf-8"))
     with open('user_details.csv', 'a') as fileuser:
@@ -66,6 +75,7 @@ def register(name, password):
     print('----------------------------------------')
     login(name, password)
 
+# Inputs de dados
 
 def access(option):
     global name
@@ -88,6 +98,7 @@ def access(option):
         print('----------------------------------------')
         register(name, password)
 
+# Inicio
 
 def begin():
     global option
